@@ -572,8 +572,10 @@ char zsignal;
 double var[3] = {2.2};
 
 //int clientfunc (void);
-///////////////////creat connetion
-	int rc1; // For the returned values
+
+
+
+int rc1; // For the returned values
 	pthread_t thread1; // Threads pointer's
 	
 	// create socket
@@ -606,21 +608,25 @@ double var[3] = {2.2};
 	//if( (rc1=pthread_create( &thread1, NULL, &slow_receive, NULL )) )
 	//{
 	//	printf( "Thread creation failed: %d\n", rc1 );
-	//	exit(1);
+		//exit(1);
 	//}
 
 	/* Wait till threads are complete before main continues. Unless we  */
 	/* wait we run the risk of executing an exit which will terminate   */
 	/* the process and all threads before the threads have completed.   */
-	//pthread_join( thread1, NULL ); 
-
-	//close( connectionFd	); // close connection with server
-	//printf("\n closed connection\n");
-
-	//return 0;
+	pthread_join( thread1, NULL ); 
 
 
-//////////////////creat connection
+
+
+
+
+
+
+
+
+
+
     while(!STOP) {
       monitor_serialport();
       IMU_Gesture();
@@ -636,19 +642,28 @@ double var[3] = {2.2};
 		zsignal = *in_buffer;
       
       
-      if (zsignal == 'i')
+        if (zsignal == 'i' && motion_state)
       {
-		  
+		  axis_jog.serial_number = ++counter;
+          axis_jog.mark = 0x04;
+          axis_jog.vel = 500000;
+          write_command_buffer(axis_jog);
 		  }
       
       if (zsignal == 'n')
       {
-		  
+		  axis_jog.serial_number = ++counter; //what's axis_jog.serial_number?
+          axis_jog.mark = 0x0f;
+          axis_jog.vel = 0;
+          write_command_buffer(axis_jog); 
 		  }
 		  
-	  if (zsignal == 'o')
+	  if (zsignal == 'o' && motion_state)
       {
-		  
+		  axis_jog.serial_number = ++counter;
+          axis_jog.mark = 0x04;
+          axis_jog.vel = -500000;
+          write_command_buffer(axis_jog);
 		  }
       
       
@@ -784,5 +799,4 @@ int main(int argc, char* argv[]) {
     close_keyboard();
     return 1;
 }
-
 
