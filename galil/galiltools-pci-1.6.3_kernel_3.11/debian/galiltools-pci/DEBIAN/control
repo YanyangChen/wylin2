@@ -1,0 +1,11 @@
+Package: galiltools-pci
+Version: 1.6.3
+Architecture: amd64
+Maintainer: Galil <postmaster@galilmc.com>
+Installed-Size: 69
+Conflicts: galilsuite-pci
+Section: kernel
+Priority: optional
+Homepage: http://www.galilmc.com/
+Description: Test GalilTools PCI Driver build
+ More info on GalilTools PCI Driver

@@ -1,0 +1,2 @@
+/home/medros/study/galil/galil_pci_kernel_3.8/galiltools-pci-1.6.3/galilpci.ko
+/home/medros/study/galil/galil_pci_kernel_3.8/galiltools-pci-1.6.3/galilpci.o

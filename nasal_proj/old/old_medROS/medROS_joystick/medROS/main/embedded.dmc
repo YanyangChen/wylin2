@@ -1,0 +1,89 @@
+'Program to read positions
+'
+#BEGIN; 'Initialisation routine
+'
+'Setup of motion control board
+MG "START";' Unsolicited notification message
+k_time=5; 'Update time
+TM k_time*100; 'Sample time (micro-secs)
+KP 200,0,0,0; 'Proportional
+KD 500,0,0,0; 'Derivative
+KI 0,0,0,0; 'Integral
+OF 0,0,0,0;' For safety reasons
+TL 6,1,1,1; 'Set torque limit
+MO;'
+SHA; 'Start controller
+DP*=0; 'Reference initial joint positions
+DE*=0; 'Reference initial aux positions
+DM v[4]; 'Array to store velocities
+v[0]=0;v[1]=0;v[2]=0;v[3]=0; 'Initialise
+JP #TLOOP; 'Jump to torque-control loop
+EN;' End of routine
+'
+'
+'
+'
+'
+#TLOOP; 'Torque control loop
+'
+JG0; 'Jog mode
+AC 500000; 'Acceleation
+DC 500000; 'Deacceleration
+BGA; 'Begin motion
+#SLOOP; 'Speed control
+JG v[0]; 'Speed command
+JP #SLOOP; 'Return to torque-control loop
+'
+EN; 'End loop
+'
+'
+'
+'
+'
+'
+#STOP; 'Stop subroutine
+'
+KP*=0;KD*=0;KI*=0; 'Deactivate everything
+JP #STOP; 'Return loop
+'
+EN; 'End
+'
+'
+'
+'
+'
+#AUTO; 'Automatic subroutine
+'
+'Deactivate everything
+KP*=0;KD*=0;KI*=0; 'Zero gains to set my own control law
+JP #AUTO;' Jump back to #AUTO
+'
+EN; 'End of routine
+'
+'
+'
+'
+'
+#AUTOERR; 'Automatic subroutine for notification of EEPROM checksum errors
+'
+MG"AUTO_ERROR"; 'Unsolicited message
+JP #STOP;' Jump to #STOP
+'
+EN; 'End of routine
+'
+'
+'
+'
+'
+#CMDERR; 'Subroutine that runs code when a DMC code error occurs
+'
+MG"CMD_ERROR"; 'Unsolicited message
+JP #STOP;' Jump to #STOP
+'
+EN; 'End of routine
+'
+'
+'
+#SJCDM; 'Subroutine that makes safe joint move under critical damping
+'
+MG"SAFE MODE"; 'unsolicited message

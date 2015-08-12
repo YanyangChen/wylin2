@@ -1,0 +1,14 @@
+Source: galiltools-pci
+Section: kernel
+Priority: optional
+Maintainer: Galil <postmaster@galilmc.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 1.6.3
+Homepage: http://www.galilmc.com/
+
+Package: galiltools-pci
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: galilsuite-pci
+Description: Test GalilTools PCI Driver build
+ More info on GalilTools PCI Driver

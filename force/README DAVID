@@ -1,0 +1,15 @@
+if you change these files to a different folder, run
+
+	./configure --prefix=/usr
+
+compilation using the Makefile
+
+	make all
+
+or simply compile using the gcc options
+	
+	gcc main.c atinano.c -o atitest -lcomedi -latift-0.1 -lm
+
+important is always to check the configuration options in
+
+	/usr/lib/pkgconfig/"DESIRED LIBRARY" or /usr/local/lib/pkgconfig/"DESIRED LIBRARY"

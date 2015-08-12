@@ -1,0 +1,6 @@
+# Set up GalilTool PCI driver user group
+# To gain access to PCI device, add your user account to galil group
+#
+
+KERNEL=="galilpci*", GROUP="galil", MODE="0660"
+

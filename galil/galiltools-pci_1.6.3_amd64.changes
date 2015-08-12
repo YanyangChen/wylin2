@@ -1,0 +1,22 @@
+Format: 1.8
+Date: Mon, 15 Apr 2013 15:20:44 -0700
+Source: galiltools-pci
+Binary: galiltools-pci
+Architecture: amd64
+Version: 1.6.3
+Distribution: stable
+Urgency: low
+Maintainer: Galil <postmaster@galilmc.com>
+Changed-By: Galil <postmaster@galilmc.com>
+Description: 
+ galiltools-pci - Test GalilTools PCI Driver build
+Changes: 
+ galiltools-pci (1.6.3) stable; urgency=low
+ .
+   * Release.  Please refer to online document for changes
+Checksums-Sha1: 
+ 4563eaedfa8472cdd856657a62cbf1a32c2213c6 9122 galiltools-pci_1.6.3_amd64.deb
+Checksums-Sha256: 
+ 90d825debb1a44683de79fa3f70872b50f946f351150e8dae87d774126cabdf4 9122 galiltools-pci_1.6.3_amd64.deb
+Files: 
+ e033330c78ddf99db59176333f6cd738 9122 kernel optional galiltools-pci_1.6.3_amd64.deb

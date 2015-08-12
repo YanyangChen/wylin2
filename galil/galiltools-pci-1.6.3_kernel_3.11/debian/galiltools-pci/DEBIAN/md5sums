@@ -1,0 +1,4 @@
+d1c7495af6e929d07fc2bc56d2151480  lib/modules/3.11.0-26-generic/galilpci.ko
+6e1fba0a5dd1c2a8e44b3d365303cc3a  lib/udev/rules.d/90-galilpci.rules
+91c30584c6f0dad1285c7b75f91ab285  usr/share/doc/galiltools-pci/changelog.gz
+6a7bfb2b924b18d46e874055eabac4fd  usr/share/doc/galiltools-pci/copyright
