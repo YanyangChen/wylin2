@@ -34,23 +34,6 @@ using namespace std;
 
 
 static int counter = 0;
-
-/*
- * 
- * 
- * for(int x=0; x<10; x++)
-{
-  for(int y=0; y<10; y++)
-  {
-    static int number_of_times = 0;
-    number_of_times++;
-  }
-}
- * use static in this fashion to prevent a variable from being reinitialized inside a loop. 
- * For instance, in the following code, number_of_times comes out to be 100, even though the 
- * line "static int number_of_times = 0;" is inside the inner loop, where it would apparently be executed
- * every time the program loops.
- * */
 static RBT_TRAJ_LINEAR_MOVE   traj_linear_move;
 static RBT_AXIS_JOG           axis_jog;
 static RBT_MULTI_AXIS_JOG     multi_axis_jog;
@@ -390,24 +373,16 @@ int MapJoint(int joint){
   return joint;
 }
 
-int i=0, k = 0;
+int IMU_Gesture()
+{
+  int i=0, k = 0;
   static int current_joint = 0, map_current_joint = 0;
   char str[256];
   float delta[3], dir=0;
   static int trig[MAX_TRIG_NUM][3]={{0}};
   static int large_angle_trig[2]={0,0};
   static int ptr=-1, cnt=0;
-
-int IMU_Gesture()
-{
-   i=0, k = 0;
-  current_joint = 0, map_current_joint = 0;
-  //~ char str[256];
-  dir=0;
-  //trig[MAX_TRIG_NUM][3]={{0}};
-  //large_angle_trig[2]={0,0};
-  ptr=-1, cnt=0;
-  //~ clock_sub(delta, YPR, ref_YPR);
+  clock_sub(delta, YPR, ref_YPR);
 	memcpy(pCoreStatus->imu.delta_YPR, delta, sizeof(delta));
   if (delta_angle_show) printf("delta: %.02f; %.02f; %.02f            \r", delta[0], delta[1], delta[2]);
   
@@ -418,9 +393,8 @@ int IMU_Gesture()
   ptr = (ptr+1) % MAX_TRIG_NUM;
   for (i=0; i<3; i++) {
     trig[ptr][i] = (delta[i] > Threshold[i].right) ? trig[ptr][i] = 1 : ((delta[i] < Threshold[i].left)? -1 : 0);
-  }  //trig[ptr] is the parameter to trigger IMU motions
-	 //left = -1, middle = 0, right = 1; threshold was 65
-	 //each i hascorrelated threshold
+  }
+  
   //if(trig[ptr][2]==0 && trig[k][2] != 0) trig_down.record_trig();
   
   large_angle_trig[0] = large_angle_trig[1];
@@ -437,7 +411,7 @@ int IMU_Gesture()
       multi_axis_jog.mark = 0x0f;
       memcpy(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double));
       map_current_joint = MapJoint(current_joint);
-      multi_axis_jog.vel[map_current_joint] = dir*ctrl_var[map_current_joint] + ctrl_var_offset[map_current_joint]; //dir used here as a sign for multiplication
+      multi_axis_jog.vel[map_current_joint] = dir*ctrl_var[map_current_joint] + ctrl_var_offset[map_current_joint];
       write_command_buffer(multi_axis_jog);
     }
     }
@@ -597,6 +571,10 @@ char in_buffer[1024], out_buffer[1024];
 char zsignal;
 double var[3] = {2.2};
 
+//int clientfunc (void);
+
+
+
 int rc1; // For the returned values
 	pthread_t thread1; // Threads pointer's
 	
@@ -637,6 +615,18 @@ int rc1; // For the returned values
 	/* wait we run the risk of executing an exit which will terminate   */
 	/* the process and all threads before the threads have completed.   */
 	pthread_join( thread1, NULL ); 
+
+
+
+
+
+
+
+
+
+
+
+
     while(!STOP) {
       monitor_serialport();
       IMU_Gesture();
@@ -646,64 +636,17 @@ int rc1; // For the returned values
 		memset( &in_buffer, 0, sizeof(in_buffer) ); // reset memory to 0's
 		recv( connectionFd, in_buffer, sizeof(in_buffer), 0 ); // receive message
 		printf("Received: %s\n", in_buffer);
-		sleep_time(0.1);  //should be faster than 30hz
+		sleep_time(0.1);
       
       
 		zsignal = *in_buffer;
-
-      if (zsignal =='a')  //sound activated
-      {
-		 motion_state = 1;
-		task_enable_task.serial_number = ++counter;
-          write_command_buffer(task_enable_task); 
-		  }
-     if  (zsignal =='s')  //sound stopped
-     {	
-		 motion_state = 0;
-		task_disable_task.serial_number = ++counter;
-          write_command_buffer(task_disable_task);
-		 }		
-		
-      if (trig[ptr][1] == 1)//if yawing left or right : which ptr stands for the z axis motion?
-      {
-		zsignal = 'l';  
-		  } 
-      
-      if (trig[ptr][1] == -1)//if yawing left or right : which ptr stands for the z axis motion?
-      {
-		zsignal = 'r';  
-		  } 
-      
-       //~ if (trig[ptr][1] == 0)//if yawing left or right : which ptr stands for the z axis motion? use "&&" logic below
-      //~ {
-		//~ zsignal = 'n';  
-		  //~ } 
       
       
-      
-      if (trig[ptr][2] == 1)//if yawing left or right  : which ptr stands for the y axis motion?
-      {
-		zsignal = 'u';  
-		  } 
-      
-	 if (trig[ptr][2] == -1)//if yawing left or right  : which ptr stands for the y axis motion?
-      {
-		zsignal = 'd';  
-		  } 
-      
-      if ((trig[ptr][2] == 0) && (trig[ptr][1] == 0))//if yawing left or right : which ptr stands for the z axis motion?
-      {
-		zsignal = 'n';  
-		  } 
-      
-      
-      
-      
-      if (zsignal == 'i' && motion_state)
+        if (zsignal == 'i' && motion_state)
       {
 		  axis_jog.serial_number = ++counter;
           axis_jog.mark = 0x04;
-          axis_jog.vel = 50000;
+          axis_jog.vel = 500000;
           write_command_buffer(axis_jog);
 		  }
       
@@ -719,83 +662,16 @@ int rc1; // For the returned values
       {
 		  axis_jog.serial_number = ++counter;
           axis_jog.mark = 0x04;
-          axis_jog.vel = -50000;
+          axis_jog.vel = -500000;
           write_command_buffer(axis_jog);
 		  }
       
-      if (zsignal == 'u' && motion_state)
-      {
-		  axis_jog.serial_number = ++counter;
-          axis_jog.mark = 0x04;
-          axis_jog.vel = -50000;
-          write_command_buffer(axis_jog);
-		  }
-		  
-	if (zsignal == 'd' && motion_state)
-      {
-		  axis_jog.serial_number = ++counter;
-          axis_jog.mark = 0x04;
-          axis_jog.vel = -50000;
-          write_command_buffer(axis_jog);
-		  }
-      
-      
-      if (zsignal == 'l' && motion_state)
-      {
-		  axis_jog.serial_number = ++counter;
-          axis_jog.mark = 0x04;
-          axis_jog.vel = -50000;
-          write_command_buffer(axis_jog);
-		  }
-      
-      if (zsignal == 'r' && motion_state)
-      {
-		  axis_jog.serial_number = ++counter;
-          axis_jog.mark = 0x04;
-          axis_jog.vel = -50000;
-          write_command_buffer(axis_jog);
-		  }
       
       
       //  if a key is pressed
       
       if( kbhit() ) {
         pressed_key = readch(); // get pressed key
-        /*
-         * switch (zsignal){
-         * 
-         * case 'i': 
-         * 
-         * 
-         * break;
-         * 
-         * 
-         * case 'n':
-         * 
-         * 
-         * break;
-         * 
-         * 
-         * casse 'o':
-         * 
-         * 
-         * break; 
-         * 
-		 *
-         * }
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * */
-        
-        
         switch (pressed_key) {
         case 'h':
           cout << "a: get ai" << endl
@@ -855,7 +731,7 @@ int rc1; // For the returned values
 
         case 'i': //offset??
           axis_jog.serial_number = ++counter;
-          axis_jog.mark = 0x0f;
+          axis_jog.mark = 0xf;
           axis_jog.vel = 0;
           write_command_buffer(axis_jog);
           //pCoreCommandBuffer->write(axis_jog);
@@ -923,5 +799,4 @@ int main(int argc, char* argv[]) {
     close_keyboard();
     return 1;
 }
-
 

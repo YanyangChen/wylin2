@@ -653,15 +653,11 @@ int rc1; // For the returned values
 
       if (zsignal =='a')  //sound activated
       {
-		 motion_state = 1;
-		task_enable_task.serial_number = ++counter;
-          write_command_buffer(task_enable_task); 
+		 motion_state = 1; 
 		  }
      if  (zsignal =='s')  //sound stopped
      {	
 		 motion_state = 0;
-		task_disable_task.serial_number = ++counter;
-          write_command_buffer(task_disable_task);
 		 }		
 		
       if (trig[ptr][1] == 1)//if yawing left or right : which ptr stands for the z axis motion?
