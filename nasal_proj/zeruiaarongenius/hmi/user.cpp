@@ -302,8 +302,8 @@ int init()
 
   // initial parameters
   Threshold[0].left = -12;  Threshold[0].right = 12;
-  Threshold[1].left = -15;  Threshold[1].right = 15;
-  Threshold[2].left = -10;  Threshold[2].right = 10;
+  Threshold[1].left = -45;  Threshold[1].right = 45;
+  Threshold[2].left = -30;  Threshold[2].right = 30;
   large_angle_threshold.left = -65; large_angle_threshold.right = 65;
 
   // initial serial port
@@ -398,22 +398,22 @@ int IMU_Gesture()
 
 if (trig[ptr][1] == -1)
   {
-	  printf("1 is turning -1");
+	  printf("1 is turning -1");// rolling left
 	  }
   if (trig[ptr][1] == 1)
   {
-	  printf("1 is turning 1");
+	  printf("1 is turning 1"); //rolling right	
 	  }
   if (trig[ptr][1] == 0)
   {
 	  printf("1 is turning 0");
 	  }
   
-  if (trig[ptr][2] == -1)
+  if (trig[ptr][2] == -1) //tilting up
   {
 	  printf("2 is turning -1");
 	  }
-  if (trig[ptr][2] == 1)
+  if (trig[ptr][2] == 1) //tilting down
   {
 	  printf("2 is turning 1");
 	  }
@@ -436,83 +436,83 @@ if (trig[ptr][1] == -1)
 
 
 
-  //if(trig[ptr][2]==0 && trig[k][2] != 0) trig_down.record_trig();
-  
-  large_angle_trig[0] = large_angle_trig[1];
-  large_angle_trig[1] = (delta[2] > large_angle_threshold.right || delta[2] < large_angle_threshold.left) ? 1 : 0;
-  if (large_angle_trig[0] == 0 && large_angle_trig[1]) large_trig_up.record_trig();
-  
-  //
-  if (trig[ptr][2] != 0) {
-    // check the direction
-    dir = (trig[ptr][0] >0) ? 1 : ((trig[ptr][0] < 0)? -1: 0);
-    
-    if(motion_state) {
-      multi_axis_jog.serial_number = ++counter;
-      multi_axis_jog.mark = 0x0f;
-      memcpy(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double));
-      map_current_joint = MapJoint(current_joint);
-      multi_axis_jog.vel[map_current_joint] = dir*ctrl_var[map_current_joint] + ctrl_var_offset[map_current_joint];
-      write_command_buffer(multi_axis_jog);
-    }
-    }
-  
-  if (trig[ptr][2] == 0)
-    {
-      ref_YPR[0] = YPR[0];
-			pCoreStatus->imu.reference_YPR[0] = ref_YPR[0];
-      cnt++;
-      if(memcmp(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double))!=0 || cnt > 100) {
-        cnt = 0 ;
-        multi_axis_jog.serial_number = ++counter;
-        multi_axis_jog.mark = 0x0f;
-        memcpy(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double));
-        write_command_buffer(multi_axis_jog);
-      }
-      
-      // joint switch function code
-      if(trig[ptr][1] != 0 && trig[k][1] == 0 && motion_state == 1){
-        if(trig[ptr][1] > 0){
-          current_joint = (current_joint + 1) %4;
-          printf("\ncurrent joint %d\n", current_joint+1);
-          sprintf(str, "joint %d", current_joint+1);
-          speak_words(str, speak_flag);
-        }else if (trig[ptr][1] < 0){
-          current_joint = (current_joint + 3) %4;
-          printf("\ncurrent joint %d\n", current_joint+1);
-          sprintf(str, "joint %d", current_joint+1);
-          speak_words(str, speak_flag);
-        }
-      }
-    }
-  
-  if (trig_down.check_trig_down(200, 800, 3) || large_trig_up.check_trig_down(200, 2000, 2)) {
-    trig_down.set_time_q();
-    large_trig_up.set_time_q();
-    if (motion_state == 1){
-      usleep(50);
-      //task_disable_task.serial_number = ++counter;
-      //write_command_buffer(task_disable_task);
-      sprintf(str, "stop");
-    }else{
-      usleep(50);
-      task_enable_task.serial_number = ++counter;
-      write_command_buffer(task_enable_task);
-      sprintf(str, "start");
-    }
-    motion_state = !motion_state;
-    
-    if(motion_state == 0){
-      multi_axis_jog.serial_number = ++counter;
-      multi_axis_jog.mark = 0x0f;
-      memcpy(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double));
-      write_command_buffer(multi_axis_jog);
-    }
-    speak_words(str, 1);
-  }
-  
-pCoreStatus->imu.state = motion_state;
-pCoreStatus->imu.act_jnt = current_joint;
+  //~ //if(trig[ptr][2]==0 && trig[k][2] != 0) trig_down.record_trig();
+  //~ 
+  //~ large_angle_trig[0] = large_angle_trig[1];
+  //~ large_angle_trig[1] = (delta[2] > large_angle_threshold.right || delta[2] < large_angle_threshold.left) ? 1 : 0;
+  //~ if (large_angle_trig[0] == 0 && large_angle_trig[1]) large_trig_up.record_trig();
+  //~ 
+  //~ //
+  //~ if (trig[ptr][2] != 0) {
+    //~ // check the direction
+    //~ dir = (trig[ptr][0] >0) ? 1 : ((trig[ptr][0] < 0)? -1: 0);
+    //~ 
+    //~ if(motion_state) {
+      //~ multi_axis_jog.serial_number = ++counter;
+      //~ multi_axis_jog.mark = 0x0f;
+      //~ memcpy(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double));
+      //~ map_current_joint = MapJoint(current_joint);
+      //~ multi_axis_jog.vel[map_current_joint] = dir*ctrl_var[map_current_joint] + ctrl_var_offset[map_current_joint];
+      //~ write_command_buffer(multi_axis_jog);
+    //~ }
+    //~ }
+  //~ 
+  //~ if (trig[ptr][2] == 0)
+    //~ {
+      //~ ref_YPR[0] = YPR[0];
+			//~ pCoreStatus->imu.reference_YPR[0] = ref_YPR[0];
+      //~ cnt++;
+      //~ if(memcmp(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double))!=0 || cnt > 100) {
+        //~ cnt = 0 ;
+        //~ multi_axis_jog.serial_number = ++counter;
+        //~ multi_axis_jog.mark = 0x0f;
+        //~ memcpy(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double));
+        //~ write_command_buffer(multi_axis_jog);
+      //~ }
+      //~ 
+      //~ // joint switch function code
+      //~ if(trig[ptr][1] != 0 && trig[k][1] == 0 && motion_state == 1){
+        //~ if(trig[ptr][1] > 0){
+          //~ current_joint = (current_joint + 1) %4;
+          //~ printf("\ncurrent joint %d\n", current_joint+1);
+          //~ sprintf(str, "joint %d", current_joint+1);
+          //~ speak_words(str, speak_flag);
+        //~ }else if (trig[ptr][1] < 0){
+          //~ current_joint = (current_joint + 3) %4;
+          //~ printf("\ncurrent joint %d\n", current_joint+1);
+          //~ sprintf(str, "joint %d", current_joint+1);
+          //~ speak_words(str, speak_flag);
+        //~ }
+      //~ }
+    //~ }
+  //~ 
+  //~ if (trig_down.check_trig_down(200, 800, 3) || large_trig_up.check_trig_down(200, 2000, 2)) {
+    //~ trig_down.set_time_q();
+    //~ large_trig_up.set_time_q();
+    //~ if (motion_state == 1){
+      //~ usleep(50);
+      //~ //task_disable_task.serial_number = ++counter;
+      //~ //write_command_buffer(task_disable_task);
+      //~ sprintf(str, "stop");
+    //~ }else{
+      //~ usleep(50);
+      //~ task_enable_task.serial_number = ++counter;
+      //~ write_command_buffer(task_enable_task);
+      //~ sprintf(str, "start");
+    //~ }
+    //~ motion_state = !motion_state;
+    //~ 
+    //~ if(motion_state == 0){
+      //~ multi_axis_jog.serial_number = ++counter;
+      //~ multi_axis_jog.mark = 0x0f;
+      //~ memcpy(multi_axis_jog.vel, ctrl_var_offset, 4*sizeof(double));
+      //~ write_command_buffer(multi_axis_jog);
+    //~ }
+    //~ speak_words(str, 1);
+  //~ }
+  //~ 
+//~ pCoreStatus->imu.state = motion_state;
+//~ pCoreStatus->imu.act_jnt = current_joint;
   return RTN_OK;
 }
 
