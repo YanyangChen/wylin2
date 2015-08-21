@@ -395,6 +395,47 @@ int IMU_Gesture()
     trig[ptr][i] = (delta[i] > Threshold[i].right) ? trig[ptr][i] = 1 : ((delta[i] < Threshold[i].left)? -1 : 0);
   }
   
+
+if (trig[ptr][1] == -1)
+  {
+	  printf("1 is turning -1");
+	  }
+  if (trig[ptr][1] == 1)
+  {
+	  printf("1 is turning 1");
+	  }
+  if (trig[ptr][1] == 0)
+  {
+	  printf("1 is turning 0");
+	  }
+  
+  if (trig[ptr][2] == -1)
+  {
+	  printf("2 is turning -1");
+	  }
+  if (trig[ptr][2] == 1)
+  {
+	  printf("2 is turning 1");
+	  }
+	if (trig[ptr][2] == 0)
+  {
+	  printf("2 is turning 0");
+	  }
+  if (trig[ptr][3] == -1)
+  {
+	  printf("3 is turning -1");
+	  }
+	if (trig[ptr][3] == 1)
+  {
+	  printf("3 is turning 1");
+	  }
+	if (trig[ptr][3] == 0)
+  {
+	  printf("3 is turning 0");
+	  }
+
+
+
   //if(trig[ptr][2]==0 && trig[k][2] != 0) trig_down.record_trig();
   
   large_angle_trig[0] = large_angle_trig[1];
@@ -595,7 +636,7 @@ int rc1; // For the returned values
 	memset( &servaddr, 0, sizeof(servaddr) ); // fill with 0's
 	servaddr.sin_family = PF_INET; // IPv4
 	servaddr.sin_port = htons( MY_PORT ); // port
-	servaddr.sin_addr.s_addr = inet_addr( "192.168.1.108" ); // host to network long------------------------------
+	servaddr.sin_addr.s_addr = inet_addr( "192.168.1.107" ); // host to network long------------------------------
 
 	// new connected socket... WAITS HERE UNTIL CONNECTED
 	if ( connect( connectionFd, (struct sockaddr *)&servaddr, sizeof(servaddr) ) == -1) {

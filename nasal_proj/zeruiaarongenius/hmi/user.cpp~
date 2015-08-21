@@ -395,6 +395,47 @@ int IMU_Gesture()
     trig[ptr][i] = (delta[i] > Threshold[i].right) ? trig[ptr][i] = 1 : ((delta[i] < Threshold[i].left)? -1 : 0);
   }
   
+
+if (trig[ptr][1] == -1)
+  {
+	  printf("1 is turning -1");
+	  }
+  if (trig[ptr][1] == 1)
+  {
+	  printf("1 is turning 1");
+	  }
+  if (trig[ptr][1] == 0)
+  {
+	  printf("1 is turning 0");
+	  }
+  
+  if (trig[ptr][2] == -1)
+  {
+	  printf("2 is turning -1");
+	  }
+  if (trig[ptr][2] == 1)
+  {
+	  printf("2 is turning 1");
+	  }
+	if (trig[ptr][2] == 0)
+  {
+	  printf("2 is turning 0");
+	  }
+  if (trig[ptr][3] == -1)
+  {
+	  printf("3 is turning -1");
+	  }
+	if (trig[ptr][3] == 1)
+  {
+	  printf("3 is turning 1");
+	  }
+	if (trig[ptr][3] == 0)
+  {
+	  printf("3 is turning 0");
+	  }
+
+
+
   //if(trig[ptr][2]==0 && trig[k][2] != 0) trig_down.record_trig();
   
   large_angle_trig[0] = large_angle_trig[1];
@@ -569,6 +610,7 @@ int connectionFd, _true = 1;
 struct sockaddr_in servaddr;
 char in_buffer[1024], out_buffer[1024];
 char zsignal;
+char zsignalp;
 double var[3] = {2.2};
 
 //int clientfunc (void);
@@ -640,6 +682,36 @@ int rc1; // For the returned values
       
       
 		zsignal = *in_buffer;
+      
+      
+      	if (zsignalp != 'a'){
+      if (zsignal =='a')  //sound activated
+      
+      //~ {
+		  //~ bgsignal = 1;
+		  //~ }
+      //~ 
+      //~ 
+      {
+		 motion_state = 1;
+		task_enable_task.serial_number = ++counter;
+          write_command_buffer(task_enable_task); 
+          zsignalp = 'a';
+		  }
+	  }
+	  if (zsignalp != 's'){
+     if  (zsignal =='s')  //sound stopped
+     //~ {
+		 //~ bgsignal = 0;
+		 //~ }
+     {	
+		 motion_state = 0;
+		task_disable_task.serial_number = ++counter;
+          write_command_buffer(task_disable_task);
+          zsignalp = 's';
+		 }		
+		}
+      
       
       
         if (zsignal == 'i' && motion_state)
@@ -799,4 +871,5 @@ int main(int argc, char* argv[]) {
     close_keyboard();
     return 1;
 }
+
 
