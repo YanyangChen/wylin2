@@ -433,9 +433,8 @@ if (trig[ptr][1] == -1)
 	  printf("1 is turning -1");// rolling left
 	  keyy = 1;
 	  axis_jog.serial_number = ++counter;
-	  axis_jog.vel = -2000;
           axis_jog.mark = 0x08;
-          //~ axis_jog.vel = -2000;
+          axis_jog.vel = -2000;
           write_command_buffer(axis_jog);
 	  }
   if (trig[ptr][1] == 1)
@@ -443,9 +442,8 @@ if (trig[ptr][1] == -1)
 	  printf("1 is turning 1"); //rolling right	
 	  keyy = 2;
 	  axis_jog.serial_number = ++counter;
-          axis_jog.vel = 2000;
           axis_jog.mark = 0x08;
-          //~ axis_jog.vel = 2000;
+          axis_jog.vel = 2000;
           write_command_buffer(axis_jog);
 	  }
   if (trig[ptr][1] == 0)
@@ -453,9 +451,8 @@ if (trig[ptr][1] == -1)
 	  printf("1 is turning 0");
 	  keyy = 0;
 	  axis_jog.serial_number = ++counter; //what's axis_jog.serial_number?
-          axis_jog.vel = 0;
           axis_jog.mark = 0x08;
-          //~ axis_jog.vel = 0;
+          axis_jog.vel = 0;
           write_command_buffer(axis_jog); 
 	  }
   
@@ -464,9 +461,8 @@ if (trig[ptr][1] == -1)
 	  printf("2 is turning -1");
 	  keyy = 9;
 	  axis_jog.serial_number = ++counter;
-          axis_jog.vel = -2000;
           axis_jog.mark = 0x02;
-          //~ axis_jog.vel = 2000;
+          axis_jog.vel = 2000;
           write_command_buffer(axis_jog);
 	  }
   if (trig[ptr][2] == 1) //tilting down
@@ -474,9 +470,8 @@ if (trig[ptr][1] == -1)
 	  printf("2 is turning 1");
 	  keyy = 8;
 	  axis_jog.serial_number = ++counter;
-          axis_jog.vel = 2000;
           axis_jog.mark = 0x02;
-          //~ axis_jog.vel = -2000;
+          axis_jog.vel = -2000;
           write_command_buffer(axis_jog);
 	  }
 	if (trig[ptr][2] == 0)
