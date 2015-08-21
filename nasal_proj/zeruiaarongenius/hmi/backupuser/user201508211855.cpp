@@ -800,7 +800,7 @@ int rc1; // For the returned values
       
       
       
-        if (zsignal == 'i' )
+        if (zsignal == 'i' && motion_state)
       {
 		  axis_jog.serial_number = ++counter;
           axis_jog.mark = 0x04;
@@ -816,7 +816,7 @@ int rc1; // For the returned values
           write_command_buffer(axis_jog); 
 		  }
 		  
-	  if (zsignal == 'o' )
+	  if (zsignal == 'o' && motion_state)
       {
 		  axis_jog.serial_number = ++counter;
           axis_jog.mark = 0x04;
