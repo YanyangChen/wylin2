@@ -473,8 +473,8 @@ if (trig[ptr][1] == -1)
 	  printf("2 is turning -1");
 	  keyy = 9;
 	  axis_jog.serial_number = ++counter;
-          axis_jog.vel = -2000;
-          if(axis_jog.vel == -2000)
+          axis_jog.vel = 2000;
+          if(axis_jog.vel == 2000)
           {
           axis_jog.mark = 0x02;
           //~ axis_jog.vel = 2000;
@@ -486,8 +486,8 @@ if (trig[ptr][1] == -1)
 	  printf("2 is turning 1");
 	  keyy = 8;
 	  axis_jog.serial_number = ++counter;
-          axis_jog.vel = 2000;
-          if (axis_jog.vel == 2000)
+          axis_jog.vel = -2000;
+          if (axis_jog.vel == -2000)
           {
           axis_jog.mark = 0x02;
           //~ axis_jog.vel = -2000;
