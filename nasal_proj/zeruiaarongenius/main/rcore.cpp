@@ -30,7 +30,7 @@ RBT_STAT*           pCoreStatus;
 //Galil g("/dev/galilpci0");
 //Galil g("137.189.100.100");
 //Galil g("137.189.100.128");
-Galil g("192.168.1.106");
+Galil g("192.168.1.108");
 
 // ----- [begin] force sensor  ------------
 

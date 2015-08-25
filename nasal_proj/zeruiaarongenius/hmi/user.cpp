@@ -301,9 +301,9 @@ int init()
   printf("create share memory and channel \n");
 
   // initial parameters
-  Threshold[0].left = -12;  Threshold[0].right = 12;
-  Threshold[1].left = -45;  Threshold[1].right = 45;
-  Threshold[2].left = -30;  Threshold[2].right = 30;
+  Threshold[0].left = -20;  Threshold[0].right = 20;
+  Threshold[1].left = -20;  Threshold[1].right = 20;
+  Threshold[2].left = -20;  Threshold[2].right = 20;
   large_angle_threshold.left = -65; large_angle_threshold.right = 65;
 
   // initial serial port
@@ -431,7 +431,7 @@ int IMU_Gesture()
 if (trig[ptr][1] == -1)
   {
 	  printf("1 is turning -1");// rolling left
-	  keyy = 1;
+	//  keyy = 1;
 	  axis_jog.serial_number = ++counter;
 	  axis_jog.vel = -2000;
 	  if (axis_jog.vel == -2000)
@@ -443,7 +443,7 @@ if (trig[ptr][1] == -1)
   if (trig[ptr][1] == 1)
   {
 	  printf("1 is turning 1"); //rolling right	
-	  keyy = 2;
+	//  keyy = 2;
 	  axis_jog.serial_number = ++counter;
           axis_jog.vel = 2000;
           if (axis_jog.vel == 2000)
@@ -456,7 +456,7 @@ if (trig[ptr][1] == -1)
   if (trig[ptr][1] == 0)
   {
 	  printf("1 is turning 0");
-	  keyy = 0;
+	 // keyy = 0;
 	  axis_jog.serial_number = ++counter; //what's axis_jog.serial_number?
           axis_jog.vel = 0;
           if (axis_jog.vel == 0)
@@ -471,7 +471,7 @@ if (trig[ptr][1] == -1)
   if (trig[ptr][2] == -1) //tilting up
   {
 	  printf("2 is turning -1");
-	  keyy = 9;
+	 // keyy = 9;
 	  axis_jog.serial_number = ++counter;
           axis_jog.vel = 2000;
           if(axis_jog.vel == 2000)
@@ -484,7 +484,7 @@ if (trig[ptr][1] == -1)
   if (trig[ptr][2] == 1) //tilting down
   {
 	  printf("2 is turning 1");
-	  keyy = 8;
+	 // keyy = 8;
 	  axis_jog.serial_number = ++counter;
           axis_jog.vel = -2000;
           if (axis_jog.vel == -2000)
@@ -497,7 +497,7 @@ if (trig[ptr][1] == -1)
 	if (trig[ptr][2] == 0)
   {
 	  printf("2 is turning 0");
-	  keyy = 7;
+	 // keyy = 7;
 	  axis_jog.serial_number = ++counter; //what's axis_jog.serial_number?
 		axis_jog.vel = 0;
 		if(axis_jog.vel == 0)
@@ -810,7 +810,7 @@ int rc1; // For the returned values
       
       if (zsignal == 'n')
       {
-		  axis_jog.serial_number = ++counter; //what's axis_jog.serial_number?
+		  axis_jog.serial_number = ++counter; //
           axis_jog.mark = 0x04;
           axis_jog.vel = 0;
           write_command_buffer(axis_jog); 
